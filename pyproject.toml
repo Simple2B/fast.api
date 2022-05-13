@@ -17,9 +17,9 @@ python-dotenv = "^0.18.0"
 python-multipart = "^0.0.5"
 bcrypt = "^3.2.0"
 asyncpg = "^0.23.0"
-psycopg2 = "^2.9.3"
 SQLAlchemy = "^1.4.36"
 email-validator = "^1.2.1"
+psycopg2-binary = "^2.9.3"
 
 [tool.poetry.dev-dependencies]
 flake8 = "^3.9.2"

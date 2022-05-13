@@ -8,13 +8,15 @@ from app.models import User
 from app.utils import verify
 from app.oauth2 import create_access_token
 
-router = APIRouter(
-    tags=["Authentication"]
-)
+router = APIRouter(tags=["Authentication"])
+
 
 @router.post("/login", response_model=Token)
-def login(user_credentials: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
-    user = db.query(User).filter_by(email = user_credentials.username).first()
+def login(
+    user_credentials: OAuth2PasswordRequestForm = Depends(),
+    db: Session = Depends(get_db),
+):
+    user = db.query(User).filter_by(email=user_credentials.username).first()
 
     if not user:
         raise HTTPException(status_code=403, detail="Invalid credentials")
