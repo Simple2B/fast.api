@@ -3,8 +3,7 @@ from pydantic import BaseSettings
 
 class Settings(BaseSettings):
     SAMPLE_ENV_VAR: str
-    SECRET_KEY: str
-    ALGORITHM: str
+    JWT_SECRET: str
     ACCESS_TOKEN_EXPIRE_MINUTES: int
     DATABASE_URI: str = ""
     DEV_DATABASE_URI: str

@@ -6,6 +6,7 @@
     "aerich",
     "asyncio",
     "bcrypt",
+    "dotenv",
     "finalizer",
     "noqa",
     "pydantic",
