@@ -3,9 +3,10 @@ from sqlalchemy import Column, Integer, String, Boolean, ForeignKey, DateTime
 from sqlalchemy.orm import relationship
 
 from app.database import Base
+from .model_mixin import ModelMixin
 
 
-class Post(Base):
+class Post(Base, ModelMixin):
     __tablename__ = "posts"
 
     id = Column(Integer, primary_key=True, nullable=False)

@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 from app.schemas import Token
 from app.database import get_db
 from app.models import User
-from app.utils import verify
+from app.hash_utils import hash_verify
 from app.oauth2 import create_access_token
 
 router = APIRouter(tags=["Authentication"])
@@ -21,7 +21,7 @@ def login(
     if not user:
         raise HTTPException(status_code=403, detail="Invalid credentials")
 
-    if not verify(user_credentials.password, user.password):
+    if not hash_verify(user_credentials.password, user.password):
         raise HTTPException(status_code=403, detail="Invalid credentials")
 
     access_token = create_access_token(data={"user_id": user.id})

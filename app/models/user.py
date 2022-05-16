@@ -1,13 +1,38 @@
 from datetime import datetime
-from sqlalchemy import Column, Integer, String, DateTime
+from sqlalchemy import Column, Integer, String, DateTime, func
 
-from app.database import Base
+from app.hash_utils import make_hash, hash_verify
+from app.database import Base, db_session
+from .model_mixin import ModelMixin
 
 
-class User(Base):
+class User(Base, ModelMixin):
     __tablename__ = "users"
 
     id = Column(Integer, primary_key=True)
+    username = Column(String(64), nullable=False, unique=True)
     email = Column(String(128), nullable=False, unique=True)
-    password = Column(String(128), nullable=False)
+    password_hash = Column(String(128), nullable=False)
     created_at = Column(DateTime(), default=datetime.now)
+
+    @property
+    def password(self):
+        return self.password_hash
+
+    @password.setter
+    def password(self, value: str):
+        self.password_hash = make_hash(value)
+
+    @classmethod
+    def authenticate(cls, user_id, password):
+        user = cls.query.filter(
+            db_session.or_(
+                func.lower(cls.username) == func.lower(user_id),
+                func.lower(cls.email) == func.lower(user_id),
+            )
+        ).first()
+        if user is not None and hash_verify(password, user.password):
+            return user
+
+    def __repr__(self):
+        return f"<User: {self.username}>"
