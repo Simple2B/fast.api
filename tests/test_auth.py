@@ -1,5 +1,4 @@
 import pytest
-import asyncio
 from typing import Generator
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine

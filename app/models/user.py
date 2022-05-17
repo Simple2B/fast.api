@@ -1,5 +1,4 @@
 from datetime import datetime
-from operator import or_
 from sqlalchemy import Column, Integer, String, DateTime, func, or_
 
 from app.hash_utils import make_hash, hash_verify
