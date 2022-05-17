@@ -1,12 +1,12 @@
 from datetime import datetime
-from sqlalchemy import Column, Integer, String, DateTime, func
+from operator import or_
+from sqlalchemy import Column, Integer, String, DateTime, func, or_
 
 from app.hash_utils import make_hash, hash_verify
-from app.database import Base, db_session
-from .model_mixin import ModelMixin
+from app.database import Base, SessionLocal
 
 
-class User(Base, ModelMixin):
+class User(Base):
     __tablename__ = "users"
 
     id = Column(Integer, primary_key=True)
@@ -24,13 +24,17 @@ class User(Base, ModelMixin):
         self.password_hash = make_hash(value)
 
     @classmethod
-    def authenticate(cls, user_id, password):
-        user = cls.query.filter(
-            db_session.or_(
-                func.lower(cls.username) == func.lower(user_id),
-                func.lower(cls.email) == func.lower(user_id),
+    def authenticate(cls, db: SessionLocal, user_id: str, password: str):
+        user = (
+            db.query(cls)
+            .filter(
+                or_(
+                    func.lower(cls.username) == func.lower(user_id),
+                    func.lower(cls.email) == func.lower(user_id),
+                )
             )
-        ).first()
+            .first()
+        )
         if user is not None and hash_verify(password, user.password):
             return user
 

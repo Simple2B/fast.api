@@ -1,16 +1,13 @@
 from fastapi import HTTPException, Depends, APIRouter
-from app import hash_utils, models, schemas
+from app import hash_utils, models, schemas, oauth2
 from app.database import get_db
 from sqlalchemy.orm import Session
 
-router = APIRouter(prefix="/users", tags=["Users"])
+router = APIRouter(prefix="/user", tags=["Users"])
 
 
 @router.post("/", status_code=201, response_model=schemas.UserOut)
 def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
-
-    hashed_password = hash_utils.make_hash(user.password)
-    user.password = hashed_password
 
     new_user = models.User(**user.dict())
     db.add(new_user)
@@ -21,8 +18,12 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
 
 
 @router.get("/{id}", response_model=schemas.UserOut)
-def get_user(id: int, db: Session = Depends(get_db)):
-    user = db.query(models.User).filter_by(id=id).first()
+def get_user(
+    id: int,
+    db: Session = Depends(get_db),
+    current_user: int = Depends(oauth2.get_current_user),
+):
+    user = db.query(models.User).get(id)
 
     if not user:
         raise HTTPException(status_code=404, detail="This user was not found")

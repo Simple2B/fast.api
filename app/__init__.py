@@ -3,4 +3,4 @@ from . import models
 from . import schemas
 from . import hash_utils
 from . import oauth2
-from .routers import posts, users, auth
+from .routers import posts, user, auth
