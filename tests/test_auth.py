@@ -1,7 +1,7 @@
 from fastapi.testclient import TestClient
 from sqlalchemy.orm import Session
 
-from app.models import User
+from app.model import User
 
 
 def test_auth(client: TestClient, db: Session):

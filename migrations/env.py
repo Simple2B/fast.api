@@ -21,7 +21,7 @@ config.set_main_option("sqlalchemy.url", DB_URI)
 
 # add your model's MetaData object here
 # for 'autogenerate' support
-from app.models import Base
+from app.model import Base
 
 target_metadata = Base.metadata
 
