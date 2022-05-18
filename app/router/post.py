@@ -34,7 +34,7 @@ def create_posts(
 
 @router.get("/{id}", response_model=schema.Post)
 def get_post(id: int, db: Session = Depends(get_db)):
-    post = db.query(model.Post).filter_by(id=id).first()
+    post = db.query(model.Post).get(id)
     if not post:
         raise HTTPException(status_code=404, detail="This post was not found")
     return post

@@ -7,7 +7,6 @@ class PostBase(BaseModel):
     title: str
     content: str
     published: bool = True
-    user_id: int
 
 
 class PostCreate(PostBase):
