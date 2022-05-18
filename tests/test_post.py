@@ -1,4 +1,3 @@
-from tokenize import Token
 import pytest
 
 from fastapi.testclient import TestClient
@@ -31,7 +30,8 @@ def test_create(client: TestClient, db: Session, test_token: schema.Token):
     for i in range(TEST_POST_NUM):
         TEST_TITLE = f"Post {i}"
         TEST_CONTENT = """
-        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ipsum dignissimos id sint deleniti sequi tempore doloribus sapiente molestias perspiciatis exercitationem?
+        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ipsum dignissimos
+        id sint deleniti sequi tempore doloribus sapiente molestias perspiciatis exercitationem?
         """
 
         post = schema.PostCreate(
@@ -48,7 +48,6 @@ def test_create(client: TestClient, db: Session, test_token: schema.Token):
         post = schema.Post.parse_obj(response.json())
         assert post.title == TEST_TITLE
         assert post.content == TEST_CONTENT
-        TEST_POST_ID = post.id
 
 
 @pytest.fixture
@@ -58,7 +57,9 @@ def test_posts_ids(db: Session):
     for i in range(TEST_POST_NUM):
         TEST_TITLE = f"Post {i}"
         TEST_CONTENT = """
-        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ipsum dignissimos id sint deleniti sequi tempore doloribus sapiente molestias perspiciatis exercitationem?
+        Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+        Ipsum dignissimos id sint deleniti sequi tempore doloribus
+        sapiente molestias perspiciatis exercitationem?
         """
         post = model.Post(title=TEST_TITLE, content=TEST_CONTENT, user_id=1)
         db.add(post)

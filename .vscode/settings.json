@@ -7,11 +7,13 @@
     "asyncio",
     "bcrypt",
     "dotenv",
+    "fastapi",
     "finalizer",
     "noqa",
     "pydantic",
     "pytest",
     "skipif",
+    "sqlalchemy",
     "starlette",
     "uvicorn"
   ],
