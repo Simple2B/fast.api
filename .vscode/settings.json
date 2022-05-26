@@ -15,7 +15,8 @@
     "skipif",
     "sqlalchemy",
     "starlette",
-    "uvicorn"
+    "uvicorn",
+    "viewonly"
   ],
   "python.testing.unittestEnabled": false,
   "python.testing.nosetestsEnabled": false,

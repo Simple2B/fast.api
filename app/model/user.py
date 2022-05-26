@@ -1,5 +1,6 @@
 from datetime import datetime
 from sqlalchemy import Column, Integer, String, DateTime, func, or_
+from sqlalchemy.orm import relationship
 
 from app.hash_utils import make_hash, hash_verify
 from app.database import Base, SessionLocal
@@ -13,6 +14,8 @@ class User(Base):
     email = Column(String(128), nullable=False, unique=True)
     password_hash = Column(String(128), nullable=False)
     created_at = Column(DateTime(), default=datetime.now)
+
+    posts = relationship("Post", viewonly=True)
 
     @property
     def password(self):

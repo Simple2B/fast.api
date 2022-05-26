@@ -9,8 +9,8 @@ class Post(Base):
     __tablename__ = "posts"
 
     id = Column(Integer, primary_key=True)
-    title = Column(String, nullable=False)
-    content = Column(String, nullable=False)
+    title = Column(String(64), nullable=False)
+    content = Column(String(512), nullable=False)
     published = Column(Boolean, default=True)
     created_at = Column(DateTime(), default=datetime.now)
     user_id = Column(Integer, ForeignKey("users.id"))
