@@ -1,4 +1,3 @@
-import email
 from pydantic import BaseSettings, EmailStr
 
 
