@@ -16,3 +16,6 @@ class Post(Base):
     user_id = Column(Integer, ForeignKey("users.id"))
 
     user = relationship("User")
+
+    def __repr__(self) -> str:
+        return f"<{self.id}: {self.title} at {self.created_at}>"
