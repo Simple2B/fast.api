@@ -21,6 +21,8 @@ SQLAlchemy = "^1.4.36"
 email-validator = "^1.2.1"
 psycopg2-binary = "^2.9.3"
 alembic = "^1.7.7"
+invoke = "^1.7.1"
+ipython = "^8.3.0"
 
 [tool.poetry.dev-dependencies]
 flake8 = "^3.9.2"
