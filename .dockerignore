@@ -7,7 +7,6 @@
 Dockerfile
 LICENSE
 README.md
-__init__.py
 __pycache__
 docker-compose.yaml
 sample.env

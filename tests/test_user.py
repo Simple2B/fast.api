@@ -17,7 +17,7 @@ def test_auth(client: TestClient, db: Session):
     # create new user
     response = client.post("/user/", json=data.dict())
     assert response
-    assert response.ok
+
     new_user = schema.UserOut.parse_obj(response.json())
     user = db.query(model.User).get(new_user.id)
     assert user.username == new_user.username
