@@ -1,9 +1,10 @@
-from app.model import User
-
 from sqladmin import ModelView
+
+from app.model import User
 
 
 class UserAdmin(ModelView, model=User):
+    """Class for setting up the Admin panel for the User model"""
 
     # Permission
     can_create = True
