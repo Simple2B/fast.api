@@ -10,11 +10,13 @@ ENV PYTHONHASHSEED random
 ENV PIP_NO_CACHE_DIR off
 ENV PIP_DISABLE_PIP_VERSION_CHECK on
 
-# install poetry
-RUN curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
-ENV PATH="${PATH}:/root/.poetry/bin"
+RUN pip install poetry
+
 COPY poetry.lock .
 COPY pyproject.toml .
 
 RUN POETRY_VIRTUALENVS_CREATE=false poetry install --no-dev --no-interaction --no-ansi
+
 COPY . .
+RUN chmod +x start_server.sh
+ENTRYPOINT [ "sh","start_server.sh" ]
