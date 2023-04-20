@@ -9,7 +9,8 @@ from tests.fixture import TestData
 TEST_USERNAME = "tester1"
 TEST_EMAIL = "t@t.bu"
 TEST_PASS = "password"
-TEST_POST_NUM = 3
+TEST_TITLE = "TEST_TITLE"
+TEST_CONTENT = "TEST_CONTENT"
 TEST_TOKEN = ""
 
 
@@ -17,28 +18,22 @@ def test_create(
     client: TestClient,
     db: Session,
     test_data: TestData,
+    authorized_users_tokens: list[s.Token],
 ):
-    for i in range(TEST_POST_NUM):
-        TEST_TITLE = f"Post {i}"
-        TEST_CONTENT = """
-        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ipsum dignissimos
-        id sint deleniti sequi tempore doloribus sapiente molestias perspiciatis exercitationem?
-        """
-
-        post = s.BasePost(
-            title=TEST_TITLE,
-            content=TEST_CONTENT,
-        )
-
-        headers = {"Authorization": f"Bearer {TEST_TOKEN}"}
-
-        # create new post
-        response = client.post("/posts/", headers=headers, json=post.dict())
-        assert response and response.ok
-        response.status_code == 201
-        post = s.Post.parse_obj(response.json())
-        assert post.title == TEST_TITLE
-        assert post.content == TEST_CONTENT
+    # create new post
+    request_data = s.BasePost(
+        title=TEST_TITLE,
+        content=TEST_CONTENT,
+    )
+    response = client.post(
+        "/posts/",
+        json=request_data.dict(),
+        headers={"Authorization": f"Bearer {authorized_users_tokens[0].access_token}"},
+    )
+    assert response and response.status_code == 200
+    post = s.Post.parse_obj(response.json())
+    assert post.title == TEST_TITLE
+    assert post.content == TEST_CONTENT
 
 
 def test_read(client: TestClient, db: Session, test_posts_ids: list[int]):

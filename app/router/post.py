@@ -8,16 +8,16 @@ from app.database import get_db
 from app.dependency import get_current_user
 
 
-router = APIRouter(prefix="/posts", tags=["Posts"])
+post_router = APIRouter(prefix="/posts", tags=["Posts"])
 
 
-@router.get("/", response_model=List[s.Post])
+@post_router.get("/", response_model=List[s.Post])
 def get_posts(db: Session = Depends(get_db)):
     posts = db.query(m.Post).all()
     return posts
 
 
-@router.post("/", status_code=201, response_model=s.Post)
+@post_router.post("/", status_code=201, response_model=s.Post)
 def create_posts(
     post: s.BasePost,
     db: Session = Depends(get_db),
@@ -36,7 +36,7 @@ def create_posts(
     return new_post
 
 
-@router.get("/{id}", response_model=s.Post)
+@post_router.get("/{id}", response_model=s.Post)
 def get_post(id: int, db: Session = Depends(get_db)):
     post = db.query(m.Post).get(id)
     if not post:
@@ -44,7 +44,7 @@ def get_post(id: int, db: Session = Depends(get_db)):
     return post
 
 
-@router.delete("/{id}", status_code=204)
+@post_router.delete("/{id}", status_code=204)
 def delete_post(
     id: int,
     db: Session = Depends(get_db),
@@ -63,7 +63,7 @@ def delete_post(
     return Response(status_code=204)
 
 
-@router.put("/{id}", response_model=s.Post)
+@post_router.put("/{id}", response_model=s.Post)
 def update_post(
     id: int,
     post: s.BasePost,

@@ -10,7 +10,7 @@ def test_auth(client: TestClient, db: Session):
     USER_EMAIL = "test@test.ku"
     USER_PASSWORD = "secret"
     # data = {"username": USER_NAME, "email": USER_EMAIL, "password": USER_PASSWORD}
-    data = s.UserCreate(
+    data = s.BaseUser(
         username=USER_NAME,
         email=USER_EMAIL,
         password=USER_PASSWORD,
@@ -19,7 +19,7 @@ def test_auth(client: TestClient, db: Session):
     response = client.post("/user/", json=data.dict())
     assert response
 
-    new_user = s.UserOut.parse_obj(response.json())
+    new_user = s.User.parse_obj(response.json())
     user = db.query(m.User).get(new_user.id)
     assert user.username == new_user.username
 
