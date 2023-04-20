@@ -5,6 +5,7 @@ from sqlalchemy import pool
 
 from alembic import context
 
+from app.model import Base
 from app.database import DB_URI
 
 # this is the Alembic Config object, which provides
@@ -21,7 +22,7 @@ config.set_main_option("sqlalchemy.url", DB_URI)
 
 # add your model's MetaData object here
 # for 'autogenerate' support
-from app.model import Base
+
 
 target_metadata = Base.metadata
 

@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import Self
 
-from sqlalchemy import Column, Integer, String, DateTime, func, or_
+from sqlalchemy import Column, Integer, String, DateTime, Boolean, func, or_
 from sqlalchemy.orm import relationship
 
 from app.hash_utils import make_hash, hash_verify
@@ -20,6 +20,7 @@ class User(Base):
     email = Column(String(128), nullable=False, unique=True)
     password_hash = Column(String(128), nullable=False)
     created_at = Column(DateTime, default=datetime.now)
+    is_verified = Column(Boolean, default=False)
 
     posts = relationship("Post", viewonly=True)
 
