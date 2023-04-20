@@ -1,25 +1,29 @@
 from fastapi import HTTPException, Response, Depends, APIRouter
 from typing import List
-from app import model, oauth2, schema
-from app.database import get_db
 from sqlalchemy.orm import Session
+
+import app.model as m
+import app.schema as s
+from app.database import get_db
+from app.dependency import get_current_user
+
 
 router = APIRouter(prefix="/posts", tags=["Posts"])
 
 
-@router.get("/", response_model=List[schema.Post])
+@router.get("/", response_model=List[s.Post])
 def get_posts(db: Session = Depends(get_db)):
-    posts = db.query(model.Post).all()
+    posts = db.query(m.Post).all()
     return posts
 
 
-@router.post("/", status_code=201, response_model=schema.Post)
+@router.post("/", status_code=201, response_model=s.Post)
 def create_posts(
-    post: schema.PostCreate,
+    post: s.PostCreate,
     db: Session = Depends(get_db),
-    current_user: int = Depends(oauth2.get_current_user),
+    current_user: int = Depends(get_current_user),
 ):
-    new_post = model.Post(
+    new_post = m.Post(
         title=post.title,
         content=post.content,
         published=post.published,
@@ -32,9 +36,9 @@ def create_posts(
     return new_post
 
 
-@router.get("/{id}", response_model=schema.Post)
+@router.get("/{id}", response_model=s.Post)
 def get_post(id: int, db: Session = Depends(get_db)):
-    post = db.query(model.Post).get(id)
+    post = db.query(m.Post).get(id)
     if not post:
         raise HTTPException(status_code=404, detail="This post was not found")
     return post
@@ -44,9 +48,9 @@ def get_post(id: int, db: Session = Depends(get_db)):
 def delete_post(
     id: int,
     db: Session = Depends(get_db),
-    current_user: int = Depends(oauth2.get_current_user),
+    current_user: int = Depends(get_current_user),
 ):
-    deleted_post = db.query(model.Post).filter_by(id=id)
+    deleted_post = db.query(m.Post).filter_by(id=id)
     if not deleted_post.first():
         raise HTTPException(status_code=404, detail="This post was not found")
 
@@ -59,14 +63,14 @@ def delete_post(
     return Response(status_code=204)
 
 
-@router.put("/{id}", response_model=schema.Post)
+@router.put("/{id}", response_model=s.Post)
 def update_post(
     id: int,
-    post: schema.PostCreate,
+    post: s.PostCreate,
     db: Session = Depends(get_db),
-    current_user: int = Depends(oauth2.get_current_user),
+    current_user: int = Depends(get_current_user),
 ):
-    updated_post = db.query(model.Post).filter_by(id=id)
+    updated_post = db.query(m.Post).filter_by(id=id)
 
     if not updated_post.first():
         raise HTTPException(status_code=404, detail="This post was not found")

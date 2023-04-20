@@ -1,5 +1,20 @@
-FROM python:3.9
+FROM python:3.11-slim
 
+RUN apt-get update -y \
+    && apt-get upgrade -y \
+    && apt-get -y install build-essential \
+    zlib1g-dev \
+    libncurses5-dev \
+    libgdbm-dev \
+    libnss3-dev \
+    libssl-dev \
+    libreadline-dev \
+    libffi-dev \
+    libsqlite3-dev \
+    libbz2-dev \
+    wget \
+    && export DEBIAN_FRONTEND=noninteractive \
+    && apt-get purge -y imagemagick imagemagick-6-common
 # set working directory
 WORKDIR /app
 
@@ -18,5 +33,5 @@ COPY pyproject.toml .
 RUN POETRY_VIRTUALENVS_CREATE=false poetry install --no-dev --no-interaction --no-ansi
 
 COPY . .
-RUN chmod +x start_server.sh
+
 ENTRYPOINT [ "sh","start_server.sh" ]
