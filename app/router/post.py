@@ -19,7 +19,7 @@ def get_posts(db: Session = Depends(get_db)):
 
 @router.post("/", status_code=201, response_model=s.Post)
 def create_posts(
-    post: s.PostCreate,
+    post: s.BasePost,
     db: Session = Depends(get_db),
     current_user: int = Depends(get_current_user),
 ):
@@ -66,7 +66,7 @@ def delete_post(
 @router.put("/{id}", response_model=s.Post)
 def update_post(
     id: int,
-    post: s.PostCreate,
+    post: s.BasePost,
     db: Session = Depends(get_db),
     current_user: int = Depends(get_current_user),
 ):

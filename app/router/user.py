@@ -9,8 +9,8 @@ from app.database import get_db
 router = APIRouter(prefix="/user", tags=["Users"])
 
 
-@router.post("/", status_code=201, response_model=s.UserOut)
-def create_user(user: s.UserCreate, db: Session = Depends(get_db)):
+@router.post("/", status_code=201, response_model=s.User)
+def create_user(user: s.User, db: Session = Depends(get_db)):
     new_user = m.User(**user.dict())
     db.add(new_user)
     db.commit()
@@ -19,7 +19,7 @@ def create_user(user: s.UserCreate, db: Session = Depends(get_db)):
     return new_user
 
 
-@router.get("/{id}", response_model=s.UserOut)
+@router.get("/{id}", response_model=s.User)
 def get_user(
     id: int,
     db: Session = Depends(get_db),

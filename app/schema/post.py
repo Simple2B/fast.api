@@ -1,22 +1,19 @@
 from pydantic import BaseModel
 from datetime import datetime
-from .user_out import UserOut
+from .user import User
 
 
-class PostBase(BaseModel):
+class BasePost(BaseModel):
     title: str
     content: str
     published: bool = True
 
 
-class PostCreate(PostBase):
-    pass
-
-
-class Post(PostBase):
+class Post(BasePost):
     id: int
+    uuid: str
     created_at: datetime
-    user: UserOut
+    user: User
 
     class Config:
         orm_mode = True
