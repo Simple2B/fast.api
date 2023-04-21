@@ -33,13 +33,13 @@ class User(Base):
         self.password_hash = make_hash(value)
 
     @classmethod
-    def authenticate(cls, db: SessionLocal, user_id: str, password: str) -> Self:
+    def authenticate(cls, db: SessionLocal, email: str, password: str) -> Self:
         user = (
             db.query(cls)
             .filter(
                 or_(
-                    func.lower(cls.username) == func.lower(user_id),
-                    func.lower(cls.email) == func.lower(user_id),
+                    func.lower(cls.username) == func.lower(email),
+                    func.lower(cls.email) == func.lower(email),
                 )
             )
             .first()

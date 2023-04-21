@@ -8,7 +8,7 @@ from app.database import get_db
 from app.dependency import get_current_user
 
 
-post_router = APIRouter(prefix="/posts", tags=["Posts"])
+post_router = APIRouter(prefix="/post", tags=["Posts"])
 
 
 @post_router.get("/", response_model=List[s.Post])
@@ -21,13 +21,12 @@ def get_posts(db: Session = Depends(get_db)):
 def create_posts(
     post: s.BasePost,
     db: Session = Depends(get_db),
-    current_user: int = Depends(get_current_user),
 ):
     new_post = m.Post(
         title=post.title,
         content=post.content,
         published=post.published,
-        user_id=current_user.id,
+        # user_id=current_user.id, #TODO
     )
     db.add(new_post)
     db.commit()

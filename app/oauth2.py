@@ -18,7 +18,7 @@ INVALID_CREDENTIALS_EXCEPTION = HTTPException(
 )
 
 
-def create_access_token(data: dict):
+def create_access_token(data: dict) -> str:
     to_encode = data.copy()
     expire = datetime.utcnow() + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     to_encode.update({"exp": expire})
@@ -36,7 +36,7 @@ def verify_access_token(token: str, credentials_exception):
         if not id:
             raise credentials_exception
 
-        token_data = TokenData(id=id)
+        token_data = TokenData(user_id=id)
     except JWTError:
         raise credentials_exception
 
