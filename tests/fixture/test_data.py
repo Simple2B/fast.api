@@ -5,7 +5,7 @@ from pydantic import BaseModel
 
 
 class TestUser(BaseModel):
-    __test__ = True
+    __test__ = False
 
     username: str
     email: str
@@ -14,7 +14,7 @@ class TestUser(BaseModel):
 
 
 class TestData(BaseModel):
-    __test__ = True
+    __test__ = False
 
     test_user: TestUser | None
     test_users: list[TestUser]

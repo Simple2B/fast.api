@@ -16,8 +16,8 @@ class User(Base):
 
     uuid = Column(String(36), default=generate_uuid)
 
-    username = Column(String(64), nullable=False, unique=True)
     email = Column(String(128), nullable=False, unique=True)
+    username = Column(String(64), nullable=False, unique=True)
     password_hash = Column(String(128), nullable=False)
     created_at = Column(DateTime, default=datetime.now)
     is_verified = Column(Boolean, default=False)
