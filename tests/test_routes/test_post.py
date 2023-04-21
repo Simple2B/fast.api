@@ -13,7 +13,7 @@ TEST_TITLE = "TEST_TITLE"
 TEST_CONTENT = "TEST_CONTENT"
 
 
-def test_create(
+def test_posts(
     client: TestClient,
     db: Session,
     test_data: TestData,
@@ -27,31 +27,48 @@ def test_create(
     response = client.post(
         "api/post/",
         json=request_data.dict(),
+        headers={"Authorization": f"Bearer {authorized_users_tokens[0].access_token}"},
     )
-    assert response and response.status_code == 200
+    assert response and response.status_code == 201
     post = s.Post.parse_obj(response.json())
     assert post.title == TEST_TITLE
     assert post.content == TEST_CONTENT
 
-
-def test_read(client: TestClient, db: Session, test_posts_ids: list[int]):
-    for post_id in test_posts_ids:
-        response = client.get(f"/posts/{post_id}")
-        assert response and response.ok
-        post = s.Post.parse_obj(response.json())
-        assert post.id == post_id, "got wrong port"
-
-
-def test_delete(
-    client: TestClient,
-    db: Session,
-    test_posts_ids: list[int],
-):
-    # try delete non authorized
-    response = client.delete(
-        "/posts/1",
+    # read all posts
+    response = client.get(
+        "api/post/posts",
     )
-    assert response and response.ok
-    assert response.status_code == 204
-    post_num_after = db.query(m.Post).count()
-    assert post_num_after == (len(test_posts_ids) - 1)
+    assert response and response.status_code == 200
+    posts = s.PostList.parse_obj(response.json())
+    assert len(posts.posts) > 0
+
+    # read certain post by uuid
+    response = client.get(
+        f"api/post/{posts.posts[0].uuid}",
+        headers={"Authorization": f"Bearer {authorized_users_tokens[0].access_token}"},
+    )
+    assert response and response.status_code == 200
+    post = s.Post.parse_obj(response.json())
+    assert post.title == TEST_TITLE
+
+    # updating post
+    request_data = s.BasePost(
+        title=TEST_TITLE + "test",
+        content=TEST_CONTENT + "test",
+    )
+    response = client.put(
+        f"api/post/{posts.posts[0].uuid}",
+        json=request_data.dict(),
+        headers={"Authorization": f"Bearer {authorized_users_tokens[0].access_token}"},
+    )
+    assert response and response.status_code == 200
+    post = s.Post.parse_obj(response.json())
+    assert post.title != TEST_TITLE
+
+    # deleting post
+    response = client.delete(
+        f"api/post/{posts.posts[0].uuid}",
+        headers={"Authorization": f"Bearer {authorized_users_tokens[0].access_token}"},
+    )
+    assert response and response.status_code == 200
+    assert not db.query(m.Post).filter_by(uuid=posts.posts[0].uuid).first()

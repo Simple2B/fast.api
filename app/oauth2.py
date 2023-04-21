@@ -3,7 +3,7 @@ from fastapi import status
 from jose import JWTError, jwt
 from fastapi import HTTPException
 
-from app.schema import TokenData
+import app.schema as s
 from app.config import Settings, get_settings
 
 settings: Settings = get_settings()
@@ -28,7 +28,7 @@ def create_access_token(data: dict) -> str:
     return encoded_jwt
 
 
-def verify_access_token(token: str, credentials_exception):
+def verify_access_token(token: str, credentials_exception) -> s.TokenData:
     try:
         payload = jwt.decode(token, SECRET_KEY)
         id: str = payload.get("user_id")
@@ -36,7 +36,7 @@ def verify_access_token(token: str, credentials_exception):
         if not id:
             raise credentials_exception
 
-        token_data = TokenData(user_id=id)
+        token_data = s.TokenData(user_id=id)
     except JWTError:
         raise credentials_exception
 

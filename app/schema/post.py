@@ -17,3 +17,7 @@ class Post(BasePost):
 
     class Config:
         orm_mode = True
+
+
+class PostList(BaseModel):
+    posts: list[Post]

@@ -1,16 +1,16 @@
 from datetime import datetime
 from typing import Self
 
-from sqlalchemy import Column, Integer, String, DateTime, Boolean, func, or_
-from sqlalchemy.orm import relationship
+from sqlalchemy import Column, Integer, String, DateTime, func, or_
+
 
 from app.hash_utils import make_hash, hash_verify
 from app.database import Base, SessionLocal
 from app.utils import generate_uuid
 
 
-class User(Base):
-    __tablename__ = "users"
+class SuperUser(Base):
+    __tablename__ = "superusers"
 
     id = Column(Integer, primary_key=True)
 
@@ -20,9 +20,6 @@ class User(Base):
     email = Column(String(128), nullable=False, unique=True)
     password_hash = Column(String(128), nullable=False)
     created_at = Column(DateTime, default=datetime.now)
-    is_verified = Column(Boolean, default=False)
-
-    posts = relationship("Post", viewonly=True)
 
     @property
     def password(self):
@@ -48,4 +45,4 @@ class User(Base):
             return user
 
     def __repr__(self):
-        return f"<{self.id}: {self.email}>"
+        return f"<{self.id}: {self.username}>"

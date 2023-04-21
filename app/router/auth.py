@@ -7,6 +7,7 @@ from app.database import get_db
 import app.model as m
 import app.schema as s
 from app.oauth2 import create_access_token
+from app.logger import log
 
 auth_router = APIRouter(prefix="/auth", tags=["Authentication"])
 
@@ -23,6 +24,7 @@ def login(
     )
 
     if not user:
+        log(log.ERROR, "User [%s] was not authenticated", user_credentials.username)
         raise HTTPException(status_code=403, detail="Invalid credentials")
 
     access_token = create_access_token(data={"user_id": user.id})
@@ -31,3 +33,6 @@ def login(
         access_token=access_token,
         token_type="Bearer",
     )
+
+
+# TODO sign up
