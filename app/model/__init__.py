@@ -1,5 +1,7 @@
 # flake8: noqa F401
-from .post import Post
 from .user import User
+from .post import Post
+from .superuser import SuperUser
+from .base_user import BaseUser
 
 from app.database import Base

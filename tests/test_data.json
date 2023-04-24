@@ -1,0 +1,48 @@
+{
+  "test_users": [
+    {
+      "username": "testuser1",
+      "email": "testemail1@gmail.com",
+      "password": "1234",
+      "is_verified": true
+    },
+    {
+      "username": "testuser2",
+      "email": "testemail2@gmail.com",
+      "password": "1234",
+      "is_verified": true
+    },
+    {
+      "username": "testuser3",
+      "email": "testemail3@gmail.com",
+      "password": "1234",
+      "is_verified": true
+    }
+  ],
+  "test_authorized_users": [
+    {
+      "username": "test_authorized_user1",
+      "email": "test_authorized_email1@gmail.com",
+      "password": "1234",
+      "is_verified": true
+    },
+    {
+      "username": "test_authorized_user2",
+      "email": "test_authorized_email2@gmail.com",
+      "password": "1233",
+      "is_verified": true
+    },
+    {
+      "username": "test_authorized_user3",
+      "email": "test_authorized_email3@gmail.com",
+      "password": "1234",
+      "is_verified": true
+    }
+  ],
+  "test_user": {
+    "email": "test@gmail.com",
+    "username": "test_username",
+    "password": "test_password",
+    "is_verified": true
+  }
+}
