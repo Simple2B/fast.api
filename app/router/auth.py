@@ -20,7 +20,7 @@ def login(
 ):
     user: m.User = m.User.authenticate(
         db,
-        user_credentials.username,  # its email
+        user_credentials.username,
         user_credentials.password,
     )
 
@@ -52,7 +52,7 @@ def sign_up(
     try:
         db.commit()
     except SQLAlchemyError as e:
-        log(log.INFO, "Error signing up user - [%s]\n%s", data.email, e)
+        log(log.ERROR, "Error signing up user - [%s]\n%s", data.email, e)
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT, detail="Error while signing up"
         )

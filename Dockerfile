@@ -12,7 +12,6 @@ RUN apt-get update -y \
     libffi-dev \
     libsqlite3-dev \
     libbz2-dev \
-    wget \
     && export DEBIAN_FRONTEND=noninteractive \
     && apt-get purge -y imagemagick imagemagick-6-common
 # set working directory
@@ -33,5 +32,3 @@ COPY pyproject.toml .
 RUN POETRY_VIRTUALENVS_CREATE=false poetry install --no-dev --no-interaction --no-ansi
 
 COPY . .
-
-ENTRYPOINT [ "sh","start_server.sh" ]

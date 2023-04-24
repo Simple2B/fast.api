@@ -48,6 +48,7 @@ def get_post(
     current_user: m.User = Depends(get_current_user),
 ):
     if post not in current_user.posts:
+        log(log.ERROR, "Post %s does not belong to the current user", post_uuid)
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail="Post for this user not found"
         )
@@ -63,6 +64,7 @@ def update_post(
     current_user: m.User = Depends(get_current_user),
 ):
     if post not in current_user.posts:
+        log(log.ERROR, "Post %s does not belong to the current user", post_uuid)
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail="Post for this user not found"
         )
@@ -87,6 +89,7 @@ def delete_post(
     current_user: m.User = Depends(get_current_user),
 ):
     if post not in current_user.posts:
+        log(log.ERROR, "Post %s does not belong to the current user", post_uuid)
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail="Post for this user not found"
         )
@@ -94,7 +97,7 @@ def delete_post(
     try:
         db.commit()
     except SQLAlchemyError as e:
-        log(log.INFO, "Error while deleting post - %s", e)
+        log(log.ERROR, "Error while deleting post - %s", e)
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT, detail="Error while deleting post"
         )

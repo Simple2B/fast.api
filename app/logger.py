@@ -1,7 +1,7 @@
 import logging
 import sys
 
-LOGGER_NAME = "Logger"
+LOGGER_NAME = "API Logger"
 
 
 class Logger(object):

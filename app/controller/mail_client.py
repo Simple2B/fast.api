@@ -4,6 +4,7 @@ from starlette.responses import JSONResponse
 from fastapi_mail import FastMail, MessageSchema, ConnectionConfig, MessageType
 
 from app.config import Settings
+from app.logger import log
 
 
 class MailClient:
@@ -38,8 +39,10 @@ class MailClient:
         """
         Function for generating email
         Args:
-            email (email.EmailListSchema): email string
-            verification_link (str): link that will be integrated in email
+            email (str): email string
+            subject (str): subject of email
+            template (str): path to template
+            template_body (str): variables that are passed to template
         Returns:
             JSONResponse: Email has been spent
         """
@@ -54,6 +57,7 @@ class MailClient:
             message,
             template_name=template,
         )
+        log(log.INFO, "Sending message to %s", email)
         return JSONResponse(
             status_code=200,
             content={
