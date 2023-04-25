@@ -1,10 +1,13 @@
 from sqlalchemy.orm import Session
 from invoke import task
-from app.config import settings
+from app.config import Settings, get_settings
 from app.model import User
 
 NUM_TEST_USERS = 10
 NUM_TEST_POSTS = 3
+
+
+settings: Settings = get_settings()
 
 
 @task

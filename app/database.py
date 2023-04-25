@@ -21,7 +21,7 @@ Base = declarative_base()
 
 @lru_cache
 def get_engine() -> Engine:
-    settings: Settings = settings.get_settings()
+    settings: Settings = get_settings()
     return create_engine(settings.DB_URI)
 
 

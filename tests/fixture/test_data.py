@@ -10,7 +10,7 @@ class TestUser(BaseModel):
     username: str
     email: str
     password: str
-    is_verified: bool
+    is_verified: bool | None
 
 
 class TestData(BaseModel):
@@ -21,6 +21,7 @@ class TestData(BaseModel):
 
     # authorized
     test_authorized_users: list[TestUser]
+    test_superuser: TestUser | None
 
 
 @pytest.fixture
