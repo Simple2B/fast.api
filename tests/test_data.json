@@ -48,7 +48,6 @@
   "test_superuser": {
     "username": "test_superuser",
     "email": "test_superuser@gmail.com",
-    "password": "1234",
-    "is_verified": true
+    "password": "1234"
   }
 }
