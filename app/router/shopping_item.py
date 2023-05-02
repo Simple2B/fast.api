@@ -1,5 +1,6 @@
-from fastapi import Depends, APIRouter, status
+from fastapi import Depends, APIRouter, status, HTTPException
 from sqlalchemy.orm import Session
+from sqlalchemy.exc import SQLAlchemyError
 from app.logger import log
 from app import schema, model
 from app.database import get_db
@@ -32,3 +33,23 @@ def add_item(item: schema.GroceryItem, db: Session = Depends(get_db)):
     db.commit()
     log(log.INFO, "Item added: %s", new_item)
     return new_item
+
+
+@shopping_item_router.delete(
+    "/{item_id}",
+    status_code=status.HTTP_200_OK,
+)
+def delete_post(
+    item_id: int,
+    db: Session = Depends(get_db),
+):
+    item = db.query(model.GroceryItem).filter_by(id=item_id).first()
+    db.delete(item)
+    try:
+        db.commit()
+    except SQLAlchemyError as e:
+        log(log.ERROR, "Error while deleting item - %s", e)
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT, detail="Error while deleting item"
+        )
+    return status.HTTP_200_OK
