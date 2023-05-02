@@ -56,6 +56,5 @@ def test_delete_items(
     assert db.query(model.GroceryItem).count() == 1
 
     response = client.delete(f"api/shopping/{item_to_delete.id}")
-    assert response
     assert response.status_code == 200
     assert db.query(model.GroceryItem).count() == 0
