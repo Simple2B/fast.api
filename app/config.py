@@ -8,13 +8,12 @@ class Settings(BaseSettings):
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
     DB_URI: str = ""
     DATABASE_URI: str = ""
-    DEV_DATABASE_URI: str = ""
     ADMIN_USER: str = "admin"
     ADMIN_PASS: str = "admin"
     ADMIN_EMAIL: EmailStr = "admin@admin.com"
 
     class Config:
-        env_file = ".env", "project.env"
+        env_file = ".env"
 
 
 @lru_cache

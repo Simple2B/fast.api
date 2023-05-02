@@ -18,6 +18,16 @@
             ],
             "jinja": true,
             "justMyCode": true
+        },
+        {
+            "name": "Invoke",
+            "type": "python",
+            "request": "launch",
+            "module": "invoke",
+            "args": [
+                "shell"
+            ],
+            "justMyCode": true
         }
     ]
 }
