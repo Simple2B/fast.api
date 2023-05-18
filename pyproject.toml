@@ -5,7 +5,7 @@ description = ""
 authors = ["Nikolay <nchernov@gmail.com>"]
 
 [tool.poetry.dependencies]
-python = "^3.9"
+python = "^3.11"
 python-dotenv = "^0.18.0"
 setuptools = "^65.4.1"
 asyncpg = "^0.27.0"
