@@ -5,12 +5,12 @@ services:
     volumes:
       - db_data:/var/lib/postgresql/data
     environment:
-      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
-      POSTGRES_DB: ${DATABASE_NAME}
-      POSTGRES_USER: ${DATABASE_USERNAME}
-      PGUSER: ${DATABASE_USERNAME}
-      PGDATABASE: ${DATABASE_NAME}
-      PGPASSWORD: ${DATABASE_PASSWORD}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD:-password}
+      POSTGRES_DB: db
+      POSTGRES_USER: ${DATABASE_USERNAME:-postgres}
+      PGUSER: ${DATABASE_USERNAME:-postgres}
+      PGDATABASE: db
+      PGPASSWORD: ${DATABASE_PASSWORD:-password}
     ports:
       - 127.0.0.1:${DATABASE_LOCAL_PORT}:5432
     restart: always
