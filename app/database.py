@@ -10,7 +10,7 @@ from app.config import get_settings, Settings
 
 settings: Settings = get_settings()
 
-DB_URI = settings.DATABASE_URI if settings.DATABASE_URI else settings.DEV_DATABASE_URI
+DB_URI = settings.DATABASE_URI if settings.DATABASE_URI else settings.DB_URI
 
 engine = create_engine(DB_URI)
 
