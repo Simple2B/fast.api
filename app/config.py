@@ -13,7 +13,7 @@ class Settings(BaseSettings):
     ADMIN_EMAIL: EmailStr = "admin@admin.com"
 
     class Config:
-        env_file = ".env"
+        env_file = "project.env", ".env"
 
 
 @lru_cache
