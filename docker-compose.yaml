@@ -1,4 +1,4 @@
-version: "3.8"
+version: '3.8'
 services:
   db:
     image: postgres:12
@@ -12,7 +12,7 @@ services:
       PGDATABASE: db
       PGPASSWORD: ${DATABASE_PASSWORD:-password}
     ports:
-      - 127.0.0.1:${DATABASE_LOCAL_PORT}:5432
+      - 127.0.0.1:${DATABASE_LOCAL_PORT:-5435}:5432
     restart: always
 
   backup:
@@ -24,22 +24,22 @@ services:
     links:
       - db
     environment:
-      SCHEDULE: "@daily"
-      POSTGRES_DATABASE: ${DATABASE_NAME}
+      SCHEDULE: '@daily'
+      POSTGRES_DATABASE: db
       POSTGRES_HOST: db
-      POSTGRES_USER: ${DATABASE_USERNAME}
-      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
-      POSTGRES_EXTRA_OPTS: "--schema=public --blobs"
+      POSTGRES_USER: ${DATABASE_USERNAME:-postgres}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD:-password}
+      POSTGRES_EXTRA_OPTS: '--schema=public --blobs'
       DAYS_HISTORY: 7
 
   app:
     build: .
     restart: always
     command: bash ./start_server.sh
-    environment:
-      DATABASE_URI: ${PROD_DATABASE_URI}
+    # environment:
+    # DATABASE_URI: ${PROD_DATABASE_URI}
     ports:
-      - 127.0.0.1:8008:80
+      - 127.0.0.1:${WEB_APP_PORT:-8000}:80
     depends_on:
       - db
 
