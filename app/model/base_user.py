@@ -1,23 +1,23 @@
 from datetime import datetime
 from typing import Self
+import sqlalchemy as sa
+import sqlalchemy.orm as orm
 
-from sqlalchemy import Column, Integer, String, DateTime, Boolean, func, or_
 
 from app.hash_utils import make_hash, hash_verify
-from app.database import SessionLocal
 from app.utils import generate_uuid
 
 
 class BaseUser:
-    id = Column(Integer, primary_key=True)
+    id = sa.Column(sa.Integer, primary_key=True)
 
-    uuid = Column(String(36), default=generate_uuid)
+    uuid = sa.Column(sa.String(36), default=generate_uuid)
 
-    email = Column(String(128), nullable=False, unique=True)
-    username = Column(String(64), nullable=False, unique=True)
-    password_hash = Column(String(128), nullable=False)
-    created_at = Column(DateTime, default=datetime.now)
-    is_verified = Column(Boolean, default=False)
+    email = sa.Column(sa.String(128), nullable=False, unique=True)
+    username = sa.Column(sa.String(64), nullable=False, unique=True)
+    password_hash = sa.Column(sa.String(128), nullable=False)
+    created_at = sa.Column(sa.DateTime, default=datetime.now)
+    is_verified = sa.Column(sa.Boolean, default=False)
 
     @property
     def password(self):
@@ -28,17 +28,12 @@ class BaseUser:
         self.password_hash = make_hash(value)
 
     @classmethod
-    def authenticate(cls, db: SessionLocal, user_id: str, password: str) -> Self:
-        user = (
-            db.query(cls)
-            .filter(
-                or_(
-                    func.lower(cls.username) == func.lower(user_id),
-                    func.lower(cls.email) == func.lower(user_id),
-                )
-            )
-            .first()
+    def authenticate(cls, db: orm.Session, user_id: str, password: str) -> Self | None:
+        query = sa.select(cls).where(
+            sa.or_(cls.username == user_id, cls.email == user_id)
         )
+        user = db.execute(query).scalar_one_or_none()
+
         if user is not None and hash_verify(password, user.password):
             return user
 

@@ -16,6 +16,20 @@ docs = ["sphinx (>=5.3.0,<6.0.0)", "sphinx_autodoc_typehints (>=1.7.0,<2.0.0)"]
 uvloop = ["uvloop (>=0.14,<0.15)", "uvloop (>=0.14,<0.15)", "uvloop (>=0.17,<0.18)"]
 
 [[package]]
+name = "alchemical"
+version = "0.7.1"
+description = "Modern SQLAlchemy simplified"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "alchemical-0.7.1-py3-none-any.whl", hash = "sha256:cda760d5f17896f2e53f0ab68205a4a97c51dc7377faa4beb45a0710e9c0dce7"},
+    {file = "alchemical-0.7.1.tar.gz", hash = "sha256:279f19e23ac7579a43eff5405a192531cd9bc72846063ef1bcdb74158275d90d"},
+]
+
+[package.dependencies]
+sqlalchemy = ">=1.4.24"
+
+[[package]]
 name = "alembic"
 version = "1.11.1"
 description = "A database migration tool for SQLAlchemy."
@@ -1607,4 +1621,4 @@ email = ["email-validator"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "987cd4bd3463170e5388e8a6efc2b15e6fc8913aea030cc4b079ab3faf0e9b7c"
+content-hash = "4584e58650a636589710d2cadbb6bae9054b0d20114b3c1ca54f3c7b5101094c"

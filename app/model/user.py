@@ -1,10 +1,10 @@
 from sqlalchemy.orm import relationship
 
-from app.database import Base
 from .base_user import BaseUser
+from app.database import db
 
 
-class User(Base, BaseUser):
-    posts = relationship("Post", viewonly=True)
-
+class User(db.Model, BaseUser):
     __tablename__ = "users"
+
+    posts = relationship("Post", viewonly=True)

@@ -1,6 +1,6 @@
-from app.database import Base
+from app.database import db
 from .base_user import BaseUser
 
 
-class SuperUser(Base, BaseUser):
+class SuperUser(db.Model, BaseUser):
     __tablename__ = "superusers"

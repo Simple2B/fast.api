@@ -1,26 +1,26 @@
 from datetime import datetime
-from sqlalchemy import Column, Integer, String, Boolean, ForeignKey, DateTime
-from sqlalchemy.orm import relationship
+import sqlalchemy as sa
+import sqlalchemy.orm as orm
 
-from app.database import Base
+from app.database import db
 from app.utils import generate_uuid
 
 
-class Post(Base):
+class Post(db.Model):
     __tablename__ = "posts"
 
-    id = Column(Integer, primary_key=True)
+    id = sa.Column(sa.Integer, primary_key=True)
 
-    uuid = Column(String(36), default=generate_uuid)
+    uuid = sa.Column(sa.String(36), default=generate_uuid)
 
-    user_id = Column(Integer, ForeignKey("users.id"))
+    user_id = sa.Column(sa.Integer, sa.ForeignKey("users.id"))
 
-    title = Column(String(64), nullable=False)
-    content = Column(String(512), nullable=False)
-    is_published = Column(Boolean, default=True)
-    created_at = Column(DateTime, default=datetime.now)
+    title = sa.Column(sa.String(64), nullable=False)
+    content = sa.Column(sa.String(512), nullable=False)
+    is_published = sa.Column(sa.Boolean, default=True)
+    created_at = sa.Column(sa.DateTime, default=datetime.now)
 
-    user = relationship("User", viewonly=True)
+    user = orm.relationship("User", viewonly=True)
 
     def __repr__(self) -> str:
         return f"<{self.id}: {self.title} at {self.created_at}>"
