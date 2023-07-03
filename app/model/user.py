@@ -1,4 +1,5 @@
-from sqlalchemy.orm import relationship
+# pyright: reportUndefinedVariable=none
+import sqlalchemy.orm as orm
 
 from .base_user import BaseUser
 from app.database import db
@@ -7,4 +8,4 @@ from app.database import db
 class User(db.Model, BaseUser):
     __tablename__ = "users"
 
-    posts = relationship("Post", viewonly=True)
+    posts: orm.Mapped[list["Post"]] = orm.relationship()

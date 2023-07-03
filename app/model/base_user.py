@@ -9,15 +9,21 @@ from app.utils import generate_uuid
 
 
 class BaseUser:
-    id = sa.Column(sa.Integer, primary_key=True)
+    id: orm.Mapped[int] = orm.mapped_column(primary_key=True)
 
-    uuid = sa.Column(sa.String(36), default=generate_uuid)
+    uuid: orm.Mapped[str] = orm.mapped_column(sa.String(36), default=generate_uuid)
 
-    email = sa.Column(sa.String(128), nullable=False, unique=True)
-    username = sa.Column(sa.String(64), nullable=False, unique=True)
-    password_hash = sa.Column(sa.String(128), nullable=False)
-    created_at = sa.Column(sa.DateTime, default=datetime.now)
-    is_verified = sa.Column(sa.Boolean, default=False)
+    email: orm.Mapped[str] = orm.mapped_column(
+        sa.String(128), nullable=False, unique=True
+    )
+    username: orm.Mapped[str] = orm.mapped_column(
+        sa.String(64), nullable=False, unique=True
+    )
+    password_hash: orm.Mapped[str] = orm.mapped_column(sa.String(128), nullable=False)
+    created_at: orm.Mapped[datetime] = orm.mapped_column(
+        sa.DateTime, default=datetime.now
+    )
+    is_verified: orm.Mapped[bool] = orm.mapped_column(sa.Boolean, default=False)
 
     @property
     def password(self):
@@ -32,6 +38,7 @@ class BaseUser:
         query = sa.select(cls).where(
             sa.or_(cls.username == user_id, cls.email == user_id)
         )
+
         user = db.execute(query).scalar_one_or_none()
 
         if user is not None and hash_verify(password, user.password):
